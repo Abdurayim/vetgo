@@ -1,0 +1,12 @@
+import { useAuthStore } from "@/shared/stores/authStore";
+
+export function useAuth() {
+  const user = useAuthStore((s) => s.user);
+  const isLoading = useAuthStore((s) => s.isLoading);
+
+  return {
+    user,
+    isLoading,
+    isAuthenticated: !!user,
+  };
+}
