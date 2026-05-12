@@ -121,4 +121,11 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+], {
+  // Vite sets BASE_URL to the configured base path:
+  //   - production (GitHub Pages): "/vetgo/"
+  //   - local dev:                 "/"
+  // Without this, React Router tries to match "/vetgo/login" against "/login"
+  // and finds nothing, showing a 404 on every hard navigation.
+  basename: import.meta.env.BASE_URL,
+});
