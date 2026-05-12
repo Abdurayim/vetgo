@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -11,11 +10,13 @@ import type { Conversation } from "@/features/messaging/types/messaging.types";
 interface ConversationListProps {
   conversations: Conversation[];
   activeId?: string;
+  onSelect?: (id: string) => void;
 }
 
 export function ConversationList({
   conversations,
   activeId,
+  onSelect,
 }: ConversationListProps) {
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => {
@@ -45,11 +46,12 @@ export function ConversationList({
         {filtered.map((conv) => {
           const isActive = conv.id === activeId;
           return (
-            <Link
+            <button
               key={conv.id}
-              to={`/dashboard/messages/${conv.id}`}
+              type="button"
+              onClick={() => onSelect?.(conv.id)}
               className={cn(
-                "flex gap-3 border-b border-border/40 px-3 py-3 transition-colors",
+                "flex w-full gap-3 border-b border-border/40 px-3 py-3 text-left transition-colors",
                 isActive
                   ? "bg-primary/10"
                   : "hover:bg-muted/50"
@@ -101,7 +103,7 @@ export function ConversationList({
                   {conv.unreadCount}
                 </span>
               )}
-            </Link>
+            </button>
           );
         })}
         {filtered.length === 0 && (

@@ -41,7 +41,7 @@ export function BlockedDatesEditor({ blocked }: BlockedDatesEditorProps) {
     });
   }
 
-  function handleRemove(id: string) {
+  function handleRemove(id: string | number) {
     startTransition(async () => {
       try {
         await removeBlockedDate(id);

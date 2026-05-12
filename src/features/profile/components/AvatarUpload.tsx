@@ -9,6 +9,7 @@ import {
   updateAvatarAction,
 } from "@/features/profile/api/profileApi";
 import { getInitials } from "@/shared/lib/utils";
+import { useAuthStore } from "@/shared/stores/authStore";
 
 interface AvatarUploadProps {
   userId: string;
@@ -25,6 +26,7 @@ export function AvatarUpload({
 }: AvatarUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, setPending] = useState(false);
+  const { user, setUser } = useAuthStore();
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -40,6 +42,8 @@ export function AvatarUpload({
       const { avatarUrl } = await uploadAvatar(userId, file);
       const result = await updateAvatarAction(userId, avatarUrl);
       if (result.success) {
+        // Sync the auth store so the Navbar avatar updates immediately
+        if (user) setUser({ ...user, avatar_url: avatarUrl });
         toast.success("Avatar updated");
         onUpload?.(avatarUrl);
       } else {

@@ -76,4 +76,25 @@ export const apiClient = {
       body: body !== undefined ? JSON.stringify(body) : undefined,
     }),
   delete: <T>(path: string) => request<T>(path, { method: "DELETE" }),
+  /**
+   * Multipart/form-data upload. Do NOT set Content-Type manually — the
+   * browser must set it (with the correct boundary) when given a FormData body.
+   */
+  postForm: <T>(path: string, formData: FormData) => {
+    const token = getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+    return fetch(`${BASE_URL}${path}`, {
+      method: "POST",
+      headers,
+      body: formData,
+    }).then(async (res) => {
+      if (!res.ok) {
+        const text = await res.text().catch(() => res.statusText);
+        throw new ApiError(res.status, text || res.statusText);
+      }
+      if (res.status === 204) return undefined as T;
+      return res.json() as Promise<T>;
+    });
+  },
 };

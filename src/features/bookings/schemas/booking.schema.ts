@@ -6,9 +6,9 @@ export const appointmentTypeSchema = z.enum(
 );
 
 export const createBookingSchema = z.object({
-  vetProfileId: z.string().uuid("Invalid vet"),
-  vetUserId: z.string().uuid("Invalid vet user"),
-  petId: z.string().uuid().optional(),
+  vetProfileId: z.string().min(1, "Invalid vet"),
+  vetUserId: z.string().min(1, "Invalid vet user"),
+  petId: z.string().min(1).optional(),
   appointmentType: appointmentTypeSchema,
   scheduledAt: z
     .string()
@@ -23,7 +23,7 @@ export const createBookingSchema = z.object({
 });
 
 export const cancelBookingSchema = z.object({
-  bookingId: z.string().uuid("Invalid booking"),
+  bookingId: z.string().min(1, "Invalid booking"),
   cancelReason: z.string().min(3, "Please provide a reason").max(300),
 });
 

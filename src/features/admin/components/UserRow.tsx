@@ -2,6 +2,7 @@
 import { useTransition } from "react";
 import { Ban, UserCheck, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -23,12 +24,14 @@ const ROLE_STYLES: Record<string, string> = {
 
 export function UserRow({ user }: UserRowProps) {
   const [pending, startTransition] = useTransition();
+  const queryClient = useQueryClient();
 
   function handleToggleBan() {
     startTransition(async () => {
       try {
         await setUserBanned(user.id, !user.is_banned);
         toast.success(user.is_banned ? "User unbanned" : "User banned");
+        queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Failed");
       }

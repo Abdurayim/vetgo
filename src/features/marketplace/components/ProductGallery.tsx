@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { cn } from "@/shared/lib/utils";
+import { cn, resolveMediaUrl } from "@/shared/lib/utils";
 
 interface ProductGalleryProps {
   images: string[];
@@ -9,7 +9,7 @@ interface ProductGalleryProps {
 
 export function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
-  const primary = images[active] ?? images[0];
+  const primary = resolveMediaUrl(images[active] ?? images[0]);
 
   return (
     <div className="space-y-3">
@@ -38,7 +38,7 @@ export function ProductGallery({ images, alt }: ProductGalleryProps) {
               aria-label={`Image ${i + 1}`}
             >
               <img
-                src={src}
+                src={resolveMediaUrl(src)}
                 alt={`${alt} thumbnail ${i + 1}`}
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"

@@ -33,7 +33,7 @@ export function ListingRow({ listing }: ListingRowProps) {
       toast.success(
         status === "approved" ? "Listing approved" : "Listing rejected",
       );
-      await queryClient.invalidateQueries({ queryKey: ["admin", "listings"] });
+      await queryClient.invalidateQueries({ queryKey: ["admin-listings"] });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed");
     } finally {

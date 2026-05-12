@@ -48,7 +48,7 @@ export function WeeklyScheduleEditor({ slots }: WeeklyScheduleEditorProps) {
     });
   }
 
-  function handleRemove(id: string) {
+  function handleRemove(id: string | number) {
     startTransition(async () => {
       try {
         await removeAvailabilitySlot(id);

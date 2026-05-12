@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { Star, ShieldAlert } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/shared/lib/utils";
+import { formatCurrency, resolveMediaUrl } from "@/shared/lib/utils";
 import { ROUTES } from "@/shared/constants/routes";
 import type { ProductWithSeller } from "@/features/marketplace/types/product.types";
 
@@ -19,7 +19,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const thumb = product.image_urls[0];
+  const thumb = resolveMediaUrl(product.image_urls[0]);
   const outOfStock = product.stock_quantity <= 0;
 
   return (

@@ -46,3 +46,15 @@ export function slugify(text: string): string {
     .replace(/[\s_-]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+
+/**
+ * Resolve a media URL for display.
+ * - Absolute URLs (http/https) are returned unchanged.
+ * - Server-relative paths like /uploads/abc.jpg are returned as-is;
+ *   Vite's dev-server proxy forwards /uploads/* → localhost:3001/uploads/*.
+ */
+export function resolveMediaUrl(url: string | null | undefined): string {
+  if (!url) return "";
+  return url; // Vite proxies /uploads, so relative paths work in dev and prod
+}

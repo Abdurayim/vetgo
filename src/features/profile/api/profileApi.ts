@@ -1,3 +1,4 @@
+import { apiClient } from "@/shared/lib/api-client";
 import type {
   ProfileInput,
   VetProfileInput,
@@ -5,77 +6,71 @@ import type {
 import type { Profile, VetProfile } from "@/shared/types/domain.types";
 import type { ActionResult } from "@/shared/types/api.types";
 
-const MOCK_PROFILE: Profile = {
-  id: "u_mock_1",
-  role: "pet_owner",
-  full_name: "Demo User",
-  avatar_url: null,
-  phone: null,
-  address: null,
-  city: "Brooklyn",
-  country: "US",
-  latitude: null,
-  longitude: null,
-  is_active: true,
-  is_banned: false,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-};
-
-// TODO: replace with apiClient.get<Profile>(`/profiles/${userId}`) when backend is ready
 export async function getProfile(userId: string): Promise<Profile> {
-  await new Promise((r) => setTimeout(r, 100));
-  return { ...MOCK_PROFILE, id: userId };
+  return apiClient.get<Profile>(`/profiles/${userId}`);
 }
 
-// TODO: replace with apiClient.get<VetProfile | null>(`/vet-profiles/${userId}`) when backend is ready
 export async function getVetProfile(
   userId: string,
 ): Promise<VetProfile | null> {
-  await new Promise((r) => setTimeout(r, 100));
-  void userId;
-  return null;
+  return apiClient.get<VetProfile | null>(`/vet-profiles/${userId}`);
 }
 
-// TODO: replace with apiClient.patch<void>(`/profiles/${userId}`, input) when backend is ready
 export async function updateProfileAction(
   userId: string,
   input: ProfileInput,
 ): Promise<ActionResult> {
-  await new Promise((r) => setTimeout(r, 200));
-  void userId;
-  void input;
-  return { success: true };
+  try {
+    await apiClient.patch(`/profiles/${userId}`, input);
+    return { success: true };
+  } catch (err: unknown) {
+    return { success: false, error: err instanceof Error ? err.message : "Error" };
+  }
 }
 
-// TODO: replace with apiClient.put<void>(`/vet-profiles/${userId}`, input) when backend is ready
 export async function updateVetProfileAction(
   userId: string,
   input: VetProfileInput,
 ): Promise<ActionResult> {
-  await new Promise((r) => setTimeout(r, 200));
-  void userId;
-  void input;
-  return { success: true };
+  try {
+    await apiClient.put(`/vet-profiles/${userId}`, input);
+    return { success: true };
+  } catch (err: unknown) {
+    return { success: false, error: err instanceof Error ? err.message : "Error" };
+  }
 }
 
-// TODO: replace with apiClient.post<{ avatarUrl: string }>(`/profiles/${userId}/avatar`, formData) when backend is ready
+/**
+ * Uploads avatar as a base64 data-URL or object-URL string.
+ * Reads the file locally for an instant preview, then sends the data-URL to the backend.
+ */
 export async function uploadAvatar(
   userId: string,
   file: File,
 ): Promise<{ avatarUrl: string }> {
-  await new Promise((r) => setTimeout(r, 400));
-  void userId;
-  return { avatarUrl: URL.createObjectURL(file) };
+  // Convert file to base64 data-URL so the backend can store it
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const res = await apiClient.post<{ avatar_url: string }>(
+    `/profiles/${userId}/avatar`,
+    { avatar_url: dataUrl },
+  );
+  return { avatarUrl: res.avatar_url };
 }
 
-// TODO: replace with apiClient.patch<void>(`/profiles/${userId}`, { avatar_url }) when backend is ready
 export async function updateAvatarAction(
   userId: string,
   avatarUrl: string,
 ): Promise<ActionResult> {
-  await new Promise((r) => setTimeout(r, 100));
-  void userId;
-  void avatarUrl;
-  return { success: true };
+  try {
+    await apiClient.patch(`/profiles/${userId}`, { avatar_url: avatarUrl });
+    return { success: true };
+  } catch (err: unknown) {
+    return { success: false, error: err instanceof Error ? err.message : "Error" };
+  }
 }

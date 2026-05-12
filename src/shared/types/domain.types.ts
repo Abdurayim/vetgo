@@ -68,6 +68,7 @@ export interface Booking {
   status: BookingStatus;
   scheduled_at: string;
   duration_minutes: number;
+  fee: number;
   notes: string | null;
   owner_address: string | null;
   cancelled_at: string | null;
@@ -106,10 +107,21 @@ export interface Product {
   updated_at: string;
 }
 
+export type NotificationType =
+  | "booking_requested"
+  | "booking_confirmed"
+  | "booking_in_progress"
+  | "booking_cancelled"
+  | "booking_completed"
+  | "message_received"
+  | "review_received"
+  | "listing_approved"
+  | "listing_rejected";
+
 export interface Notification {
   id: string;
   user_id: string;
-  type: string;
+  type: NotificationType;
   title: string;
   body: string | null;
   data: Record<string, unknown> | null;
@@ -129,8 +141,8 @@ export interface Review {
 }
 
 export interface AvailabilitySlot {
-  id: string;
-  vet_id: string;
+  id: string | number;
+  vet_id: string | number;
   day_of_week: number;
   start_time: string;
   end_time: string;
@@ -138,8 +150,8 @@ export interface AvailabilitySlot {
 }
 
 export interface BlockedDate {
-  id: string;
-  vet_id: string;
+  id: string | number;
+  vet_id: string | number;
   blocked_date: string;
   reason: string | null;
 }

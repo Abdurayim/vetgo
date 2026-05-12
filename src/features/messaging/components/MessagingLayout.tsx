@@ -1,13 +1,14 @@
-
 import { useState } from "react";
 import { MessageSquareDashed } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 import { ConversationList } from "./ConversationList";
 import { MessageThread } from "./MessageThread";
 import {
-  MOCK_CONVERSATIONS,
-  MOCK_MESSAGES,
-} from "@/features/messaging/data/mockMessages";
+  getConversations,
+  getMessages,
+} from "@/features/messaging/api/messagingApi";
+import { LoadingSpinner } from "@/shared/components/feedback/LoadingSpinner";
 import { cn } from "@/shared/lib/utils";
 
 interface MessagingLayoutProps {
@@ -18,11 +19,41 @@ export function MessagingLayout({
   initialConversationId,
 }: MessagingLayoutProps) {
   const [activeId, setActiveId] = useState<string | undefined>(
-    initialConversationId ?? MOCK_CONVERSATIONS[0]?.id
+    initialConversationId,
   );
 
-  const active = MOCK_CONVERSATIONS.find((c) => c.id === activeId);
-  const messages = active ? MOCK_MESSAGES[active.id] ?? [] : [];
+  const { data: conversations = [], isLoading: loadingConvs } = useQuery({
+    queryKey: ["conversations"],
+    queryFn: getConversations,
+    staleTime: 30_000,
+    select: (data) => {
+      // Auto-select first conversation if none chosen
+      if (!activeId && data.length > 0 && !initialConversationId) {
+        // Set state after render via effect-free pattern: just keep activeId as
+        // first item until user clicks something
+      }
+      return data;
+    },
+  });
+
+  // Resolve active conversation from query data (avoids stale closure on mock)
+  const resolvedId = activeId ?? conversations[0]?.id;
+  const active = conversations.find((c) => c.id === resolvedId);
+
+  const { data: messages = [] } = useQuery({
+    queryKey: ["messages", resolvedId],
+    queryFn: () => getMessages(resolvedId!),
+    enabled: !!resolvedId,
+    staleTime: 15_000,
+  });
+
+  if (loadingConvs) {
+    return (
+      <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="h-[calc(100vh-10rem)] overflow-hidden rounded-2xl border border-border/60 bg-background">
@@ -30,16 +61,22 @@ export function MessagingLayout({
         <aside
           className={cn(
             "h-full border-r border-border/60",
-            active ? "hidden md:block" : "block"
+            active ? "hidden md:block" : "block",
           )}
         >
           <ConversationList
-            conversations={MOCK_CONVERSATIONS}
-            activeId={activeId}
+            conversations={conversations}
+            activeId={resolvedId}
+            onSelect={setActiveId}
           />
         </aside>
 
-        <section className={cn("h-full", !active && "hidden md:flex md:items-center md:justify-center")}>
+        <section
+          className={cn(
+            "h-full",
+            !active && "hidden md:flex md:items-center md:justify-center",
+          )}
+        >
           {active ? (
             <MessageThread
               conversation={active}
