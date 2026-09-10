@@ -12,7 +12,7 @@ deployed to GitHub Pages. The API is a separate Go (Gin) + SQLite service.
 
 `js/config.js` sets where the API lives:
 
-- On `*.github.io` it points to the deployed backend (`https://178-218-200-21.sslip.io`).
+- On `*.github.io` it points to the deployed backend (`https://vetapi.skintrader.uz`).
 - Anywhere else it is empty, meaning same origin (the Go server serves these files locally).
 
 The backend must list this site's origin (`https://abdurayim.github.io`) in its
