@@ -4,27 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VetGo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Rubik:wght@400;500;700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="css/styles.css?v=2" />
+  <link rel="stylesheet" href="css/styles.css?v=3" />
 </head>
 <body data-i18n-title="dash.title">
   <div id="header"></div>
 
-  <main class="container">
+  <main class="container page">
     <div class="dash-head">
       <h1 data-i18n="dash.heading">My profile</h1>
-      <div style="display:flex;gap:10px">
-        <a class="btn btn-ghost" id="viewPublic" href="#" target="_blank" data-i18n="dash.viewPublic">View public page ↗</a>
-        <button class="btn btn-ghost" id="logoutBtn" data-i18n="dash.logout">Log out</button>
+      <div class="dash-actions">
+        <a class="btn btn-outline" id="viewPublic" href="#" target="_blank" rel="noopener"><span data-icon="external" data-size="18"></span><span data-i18n="dash.viewPublic">View public page</span></a>
+        <button class="btn btn-ghost" id="logoutBtn" type="button"><span data-icon="logout" data-size="18"></span><span data-i18n="dash.logout">Log out</span></button>
       </div>
     </div>
-    <p class="muted" style="margin-top:0" data-i18n="dash.sub">This is what pet owners see. Keep it up to date.</p>
+    <p class="dash-sub" data-i18n="dash.sub">This is what pet owners see. Keep it up to date.</p>
 
-    <div class="auth-wrap" style="max-width:560px;margin:24px auto">
+    <div class="dash-grid">
+      <aside class="dash-preview">
+        <span class="eyebrow" data-i18n="dash.preview">Preview</span>
+        <div id="preview"></div>
+      </aside>
+
       <div class="form-card">
         <div class="form-msg" id="msg"></div>
 
-        <div id="loading" class="state"><span class="spinner" style="border-color:#ccc;border-top-color:var(--accent)"></span></div>
+        <div id="loading" class="loading-state"><span class="spinner spinner-lg"></span></div>
 
         <form id="profileForm" class="hidden" novalidate>
           <div class="field">
@@ -48,12 +56,12 @@
           </div>
 
           <div class="field">
-            <label data-i18n="field.photo">Profile photo</label>
-            <div style="display:flex;align-items:center;gap:14px">
-              <img id="currentPhoto" class="photo-preview" alt="current photo" />
-              <div>
+            <label for="photo" data-i18n="field.photo">Profile photo</label>
+            <div class="photo-row">
+              <img id="currentPhoto" class="photo-preview hidden" alt="" />
+              <div class="photo-input">
                 <input id="photo" name="photo" type="file" accept="image/*" />
-                <div class="hint" style="margin-top:4px" data-i18n="dash.replacePhoto">Choose a file to replace your photo.</div>
+                <span class="hint" data-i18n="dash.replacePhoto">Choose a file to replace your photo.</span>
               </div>
             </div>
           </div>
@@ -61,8 +69,8 @@
           <div class="field">
             <label data-i18n="field.locationShort">Location</label>
             <div class="location-row">
-              <button type="button" class="btn btn-soft" id="locBtn" data-i18n="btn.updateLocation">📍 Update to current location</button>
-              <button type="button" class="btn btn-ghost" id="mapBtn" data-i18n="btn.chooseOnMap">🗺️ Choose on map</button>
+              <button type="button" class="btn btn-accent" id="locBtn"><span data-icon="locate"></span><span data-i18n="btn.updateLocation">Update to current location</span></button>
+              <button type="button" class="btn btn-outline" id="mapBtn"><span data-icon="map"></span><span data-i18n="btn.chooseOnMap">Choose on map</span></button>
               <span class="location-status" id="locStatus"></span>
             </div>
             <div class="map-wrap hidden" id="mapWrap">
@@ -83,10 +91,11 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- ?v= busts browser/GitHub Pages caching so this page never runs stale scripts -->
-  <script src="js/config.js?v=2"></script>
-  <script src="js/i18n.js?v=2"></script>
-  <script src="js/api.js?v=2"></script>
-  <script src="js/location.js?v=2"></script>
-  <script src="js/dashboard.js?v=2"></script>
+  <script src="js/config.js?v=3"></script>
+  <script src="js/i18n.js?v=3"></script>
+  <script src="js/api.js?v=3"></script>
+  <script src="js/ui.js?v=3"></script>
+  <script src="js/location.js?v=3"></script>
+  <script src="js/dashboard.js?v=3"></script>
 </body>
 </html>

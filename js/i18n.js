@@ -22,9 +22,11 @@ const TRANSLATIONS = {
     "footer.tagline": "VetGo — find a trusted veterinarian near you.",
 
     "home.title": "VetGo — find a veterinarian near you",
-    "home.heroTitle": "Find a trusted vet near you",
-    "home.heroText": "Allow location access and we'll show you veterinarians closest to you — no sign-up needed.",
-    "home.findNearMe": "📍 Find vets near me",
+    "home.heroTitleHtml": "Find a trusted vet <em>near you</em>",
+    "home.noSignup": "No sign-up needed",
+    "home.heroText": "Allow location access and we'll show you the veterinarians closest to you.",
+    "home.findNearMe": "Find vets near me",
+    "home.nearestFirst": "nearest first",
     "home.browseAll": "Browse all",
     "home.listTitle": "Veterinarians",
     "home.listTitleNear": "Veterinarians near you",
@@ -40,13 +42,17 @@ const TRANSLATIONS = {
 
     "dist.m": "{n} m away",
     "dist.km": "{n} km away",
+    "dist.mShort": "{n} m",
+    "dist.kmShort": "{n} km",
 
     "vet.title": "Vet profile — VetGo",
-    "vet.back": "← Back to all vets",
+    "vet.back": "Back to all vets",
     "vet.about": "About",
-    "vet.call": "📞 Call",
-    "vet.whatsapp": "💬 WhatsApp",
-    "vet.copy": "📋 Copy number",
+    "vet.contact": "Contact",
+    "vet.call": "Call",
+    "vet.whatsapp": "WhatsApp",
+    "vet.copy": "Copy number",
+    "card.viewProfile": "View profile",
     "vet.copied": "Phone number copied",
     "vet.copyFail": "Couldn't copy — {phone}",
     "vet.notFound.title": "Vet not found",
@@ -67,9 +73,9 @@ const TRANSLATIONS = {
     "field.email.hint": "— for login",
     "field.password": "Password",
     "field.password.hint": "— at least 6 characters",
-    "btn.useLocation": "📍 Use my current location",
-    "btn.updateLocation": "📍 Update to current location",
-    "btn.chooseOnMap": "🗺️ Choose on map",
+    "btn.useLocation": "Use my current location",
+    "btn.updateLocation": "Update to current location",
+    "btn.chooseOnMap": "Choose on map",
     "loc.notSet": "Not set",
     "loc.mapHint": "Tap the map or drag the pin to your clinic's location.",
 
@@ -107,7 +113,8 @@ const TRANSLATIONS = {
 
     "dash.title": "My profile — VetGo",
     "dash.heading": "My profile",
-    "dash.viewPublic": "View public page ↗",
+    "dash.viewPublic": "View public page",
+    "dash.preview": "Preview",
     "dash.logout": "Log out",
     "dash.sub": "This is what pet owners see. Keep it up to date.",
     "dash.replacePhoto": "Choose a file to replace your photo.",
@@ -146,9 +153,11 @@ const TRANSLATIONS = {
     "footer.tagline": "VetGo — найдите надёжного ветеринара рядом с вами.",
 
     "home.title": "VetGo — найдите ветеринара рядом с вами",
-    "home.heroTitle": "Найдите надёжного ветеринара рядом",
-    "home.heroText": "Разрешите доступ к геолокации, и мы покажем ближайших к вам ветеринаров — регистрация не нужна.",
-    "home.findNearMe": "📍 Найти ветеринаров рядом",
+    "home.heroTitleHtml": "Найдите надёжного ветеринара <em>рядом</em>",
+    "home.noSignup": "Регистрация не нужна",
+    "home.heroText": "Разрешите доступ к геолокации, и мы покажем ближайших к вам ветеринаров.",
+    "home.findNearMe": "Найти ветеринаров рядом",
+    "home.nearestFirst": "сначала ближайшие",
     "home.browseAll": "Показать всех",
     "home.listTitle": "Ветеринары",
     "home.listTitleNear": "Ветеринары рядом с вами",
@@ -164,13 +173,17 @@ const TRANSLATIONS = {
 
     "dist.m": "{n} м от вас",
     "dist.km": "{n} км от вас",
+    "dist.mShort": "{n} м",
+    "dist.kmShort": "{n} км",
 
     "vet.title": "Профиль ветеринара — VetGo",
-    "vet.back": "← Ко всем ветеринарам",
+    "vet.back": "Ко всем ветеринарам",
     "vet.about": "О себе",
-    "vet.call": "📞 Позвонить",
-    "vet.whatsapp": "💬 WhatsApp",
-    "vet.copy": "📋 Копировать номер",
+    "vet.contact": "Контакты",
+    "vet.call": "Позвонить",
+    "vet.whatsapp": "WhatsApp",
+    "vet.copy": "Копировать номер",
+    "card.viewProfile": "Открыть профиль",
     "vet.copied": "Номер скопирован",
     "vet.copyFail": "Не удалось скопировать — {phone}",
     "vet.notFound.title": "Ветеринар не найден",
@@ -191,9 +204,9 @@ const TRANSLATIONS = {
     "field.email.hint": "— для входа",
     "field.password": "Пароль",
     "field.password.hint": "— не менее 6 символов",
-    "btn.useLocation": "📍 Использовать моё местоположение",
-    "btn.updateLocation": "📍 Обновить местоположение",
-    "btn.chooseOnMap": "🗺️ Выбрать на карте",
+    "btn.useLocation": "Использовать моё местоположение",
+    "btn.updateLocation": "Обновить местоположение",
+    "btn.chooseOnMap": "Выбрать на карте",
     "loc.notSet": "Не указано",
     "loc.mapHint": "Нажмите на карту или перетащите метку на место вашей клиники.",
 
@@ -231,7 +244,8 @@ const TRANSLATIONS = {
 
     "dash.title": "Мой профиль — VetGo",
     "dash.heading": "Мой профиль",
-    "dash.viewPublic": "Открыть публичную страницу ↗",
+    "dash.viewPublic": "Открыть публичную страницу",
+    "dash.preview": "Предпросмотр",
     "dash.logout": "Выйти",
     "dash.sub": "Это видят владельцы животных. Поддерживайте профиль актуальным.",
     "dash.replacePhoto": "Выберите файл, чтобы заменить фото.",
@@ -270,9 +284,11 @@ const TRANSLATIONS = {
     "footer.tagline": "VetGo — yaqiningizdagi ishonchli veterinarni toping.",
 
     "home.title": "VetGo — yaqiningizdagi veterinarni toping",
-    "home.heroTitle": "Yaqiningizdagi ishonchli veterinarni toping",
-    "home.heroText": "Joylashuvga ruxsat bering va biz sizga eng yaqin veterinarlarni ko‘rsatamiz — ro‘yxatdan o‘tish shart emas.",
-    "home.findNearMe": "📍 Yaqindagi veterinarlarni topish",
+    "home.heroTitleHtml": "<em>Yaqiningizdagi</em> ishonchli veterinarni toping",
+    "home.noSignup": "Ro‘yxatdan o‘tish shart emas",
+    "home.heroText": "Joylashuvga ruxsat bering va biz sizga eng yaqin veterinarlarni ko‘rsatamiz.",
+    "home.findNearMe": "Yaqindagi veterinarlarni topish",
+    "home.nearestFirst": "eng yaqinlari birinchi",
     "home.browseAll": "Hammasini ko‘rish",
     "home.listTitle": "Veterinarlar",
     "home.listTitleNear": "Sizga yaqin veterinarlar",
@@ -288,13 +304,17 @@ const TRANSLATIONS = {
 
     "dist.m": "{n} m uzoqlikda",
     "dist.km": "{n} km uzoqlikda",
+    "dist.mShort": "{n} m",
+    "dist.kmShort": "{n} km",
 
     "vet.title": "Veterinar profili — VetGo",
-    "vet.back": "← Barcha veterinarlarga qaytish",
+    "vet.back": "Barcha veterinarlarga qaytish",
     "vet.about": "Haqida",
-    "vet.call": "📞 Qo‘ng‘iroq",
-    "vet.whatsapp": "💬 WhatsApp",
-    "vet.copy": "📋 Raqamdan nusxa olish",
+    "vet.contact": "Aloqa",
+    "vet.call": "Qo‘ng‘iroq",
+    "vet.whatsapp": "WhatsApp",
+    "vet.copy": "Raqamdan nusxa olish",
+    "card.viewProfile": "Profilni ko‘rish",
     "vet.copied": "Raqam nusxalandi",
     "vet.copyFail": "Nusxa olib bo‘lmadi — {phone}",
     "vet.notFound.title": "Veterinar topilmadi",
@@ -315,9 +335,9 @@ const TRANSLATIONS = {
     "field.email.hint": "— kirish uchun",
     "field.password": "Parol",
     "field.password.hint": "— kamida 6 ta belgi",
-    "btn.useLocation": "📍 Joriy joylashuvimdan foydalanish",
-    "btn.updateLocation": "📍 Joylashuvni yangilash",
-    "btn.chooseOnMap": "🗺️ Xaritadan tanlash",
+    "btn.useLocation": "Joriy joylashuvimdan foydalanish",
+    "btn.updateLocation": "Joylashuvni yangilash",
+    "btn.chooseOnMap": "Xaritadan tanlash",
     "loc.notSet": "Belgilanmagan",
     "loc.mapHint": "Klinikangiz joylashuvini belgilash uchun xaritaga bosing yoki belgini suring.",
 
@@ -355,7 +375,8 @@ const TRANSLATIONS = {
 
     "dash.title": "Mening profilim — VetGo",
     "dash.heading": "Mening profilim",
-    "dash.viewPublic": "Ommaviy sahifani ochish ↗",
+    "dash.viewPublic": "Ommaviy sahifani ochish",
+    "dash.preview": "Ko‘rinishi",
     "dash.logout": "Chiqish",
     "dash.sub": "Buni hayvon egalari ko‘radi. Profilni yangilab turing.",
     "dash.replacePhoto": "Rasmni almashtirish uchun fayl tanlang.",
@@ -462,12 +483,13 @@ const I18N = {
     location.reload();
   },
 
-  /* <select> markup for the header language switcher. */
+  /* Segmented EN / RU / UZ control for the header. */
   renderSwitcher() {
-    const opts = LANGUAGES.map(
-      (l) => `<option value="${l.code}"${l.code === this.lang ? " selected" : ""}>${l.label}</option>`
-    ).join("");
-    return `<select class="lang-switcher" aria-label="Language" onchange="I18N.setLang(this.value)">${opts}</select>`;
+    const opts = LANGUAGES.map((l) => {
+      const active = l.code === this.lang;
+      return `<button type="button" class="lang-option${active ? " is-active" : ""}" lang="${l.code}" title="${l.label}" aria-label="${l.label}" aria-pressed="${active}" onclick="I18N.setLang('${l.code}')">${l.code.toUpperCase()}</button>`;
+    }).join("");
+    return `<div class="lang-switch" role="group" aria-label="Language">${opts}</div>`;
   },
 };
 

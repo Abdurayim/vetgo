@@ -1,8 +1,6 @@
 /* Handles both the registration form and the login form (whichever is present). */
 
-document.getElementById("header").innerHTML = renderHeader();
-document.getElementById("footer").innerHTML = renderFooter();
-I18N.apply();
+initPage();
 
 // Already logged in? Skip the forms.
 if (Auth.isLoggedIn) {

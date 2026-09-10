@@ -4,42 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VetGo</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Rubik:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="css/styles.css?v=3" />
 </head>
 <body data-i18n-title="login.title">
   <div id="header"></div>
 
-  <main class="container">
-    <div class="auth-wrap">
-      <div class="form-card">
-        <h1 data-i18n="login.heading">Welcome back</h1>
-        <p class="sub" data-i18n="login.sub">Log in to manage your VetGo profile.</p>
+  <main class="container auth-layout">
+    <aside class="auth-aside">
+      <h1 data-i18n="login.heading">Welcome back</h1>
+      <p data-i18n="login.sub">Log in to manage your VetGo profile.</p>
+      <div class="auth-art" aria-hidden="true"></div>
+    </aside>
 
-        <div class="form-msg" id="msg"></div>
+    <div class="form-card">
+      <div class="form-msg" id="msg"></div>
 
-        <form id="loginForm" novalidate>
-          <div class="field">
-            <label for="email" data-i18n="field.email">Email</label>
-            <input id="email" name="email" type="email" required data-i18n-placeholder="ph.email" />
-          </div>
-          <div class="field">
-            <label for="password" data-i18n="field.password">Password</label>
-            <input id="password" name="password" type="password" required />
-          </div>
-          <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn" data-i18n="login.submit">Log in</button>
-        </form>
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email" data-i18n="field.email">Email</label>
+          <input id="email" name="email" type="email" required data-i18n-placeholder="ph.email" />
+        </div>
+        <div class="field">
+          <label for="password" data-i18n="field.password">Password</label>
+          <input id="password" name="password" type="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn" data-i18n="login.submit">Log in</button>
+      </form>
 
-        <p class="form-foot"><span data-i18n="login.noAccount">New here?</span> <a href="register.html" data-i18n="login.join">Join as a vet</a></p>
-      </div>
+      <p class="form-foot"><span data-i18n="login.noAccount">New here?</span> <a href="register.html" data-i18n="login.join">Join as a vet</a></p>
     </div>
   </main>
 
   <div id="footer"></div>
 
-  <script src="js/config.js"></script>
-
-  <script src="js/i18n.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
+  <!-- ?v= busts browser/GitHub Pages caching so this page never runs stale scripts -->
+  <script src="js/config.js?v=3"></script>
+  <script src="js/i18n.js?v=3"></script>
+  <script src="js/api.js?v=3"></script>
+  <script src="js/ui.js?v=3"></script>
+  <script src="js/auth.js?v=3"></script>
 </body>
 </html>

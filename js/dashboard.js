@@ -1,8 +1,6 @@
 /* Dashboard: auth-gated; load own profile, edit, save (incl. photo + location). */
 
-document.getElementById("header").innerHTML = renderHeader();
-document.getElementById("footer").innerHTML = renderFooter();
-I18N.apply();
+initPage();
 
 // Auth gate.
 if (!Auth.isLoggedIn) {
@@ -19,6 +17,7 @@ const lngEl = document.getElementById("longitude");
 const photoEl = document.getElementById("photo");
 const currentPhoto = document.getElementById("currentPhoto");
 const viewPublic = document.getElementById("viewPublic");
+const previewEl = document.getElementById("preview");
 
 function showMsg(text, type = "error") {
   msgEl.textContent = text;
@@ -51,6 +50,7 @@ function fill(vet) {
     currentPhoto.classList.add("hidden");
   }
   viewPublic.href = `vet.html?id=${vet.id}`;
+  previewEl.innerHTML = vetCard(vet, { link: false });
 }
 
 // Live preview when picking a new photo.

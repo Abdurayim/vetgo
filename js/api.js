@@ -90,10 +90,12 @@ function photoUrl(path) {
   return path ? API_ORIGIN + path : null; // backend returns "/uploads/.."
 }
 
-function formatDistance(km) {
+/* "0.8 km away", or "0.8 km" with { short: true } for badges. */
+function formatDistance(km, { short = false } = {}) {
   if (km == null) return null;
-  if (km < 1) return t("dist.m", { n: Math.round(km * 1000) });
-  return t("dist.km", { n: km });
+  const suffix = short ? "Short" : "";
+  if (km < 1) return t("dist.m" + suffix, { n: Math.round(km * 1000) });
+  return t("dist.km" + suffix, { n: km });
 }
 
 /* Browser geolocation as a promise. Resolves {lat, lng}, or rejects with an
@@ -141,30 +143,3 @@ function toast(message) {
   toast._t = setTimeout(() => el.classList.remove("show"), 2200);
 }
 
-/* Reusable header markup so pages stay consistent. */
-function renderHeader() {
-  const loggedIn = Auth.isLoggedIn;
-  return `
-    <header class="site-header">
-      <div class="container">
-        <a class="brand" href="index.html">
-          <span class="logo">🐾</span> ${BRAND}
-        </a>
-        <nav class="header-actions">
-          ${
-            loggedIn
-              ? `<a class="btn btn-ghost" href="dashboard.html">${t("nav.myProfile")}</a>`
-              : `<a class="btn btn-ghost" href="login.html">${t("nav.login")}</a>
-                 <a class="btn btn-primary" href="register.html">${t("nav.join")}</a>`
-          }
-          ${I18N.renderSwitcher()}
-        </nav>
-      </div>
-    </header>`;
-}
-
-function renderFooter() {
-  return `<footer class="site-footer">
-    <div class="container">${t("footer.tagline")}</div>
-  </footer>`;
-}
