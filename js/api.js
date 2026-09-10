@@ -96,19 +96,35 @@ function formatDistance(km) {
   return t("dist.km", { n: km });
 }
 
-/* Browser geolocation as a promise. Resolves {lat, lng} or rejects. */
+/* Browser geolocation as a promise. Resolves {lat, lng}, or rejects with an
+   object whose `code` is a GeolocationPositionError code (0 = unsupported).
+   GPS-level accuracy is tried first; if the device can't provide it in time
+   (typical for laptops and phones indoors), it retries with the faster
+   network-based position, which is plenty for placing a clinic. */
 function getLocation() {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Geolocation is not supported by your browser."));
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      (err) => reject(err),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+  if (!navigator.geolocation) return Promise.reject({ code: 0 });
+  const attempt = (options) =>
+    new Promise((resolve, reject) =>
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+        reject,
+        options
+      )
     );
+  return attempt({ enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }).catch((err) => {
+    if (err && err.code === 1) throw err; // permission denied: retrying won't help
+    return attempt({ enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
   });
+}
+
+/* Localized explanation for a getLocation() failure. */
+function locationErrorMessage(err) {
+  switch (err && err.code) {
+    case 1: return t("loc.denied");
+    case 2: return t("loc.unavailable");
+    case 3: return t("loc.timeout");
+    default: return t("loc.unsupported");
+  }
 }
 
 /* Small transient toast. */

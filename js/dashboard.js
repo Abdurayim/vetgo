@@ -13,7 +13,6 @@ const msgEl = document.getElementById("msg");
 const loadingEl = document.getElementById("loading");
 const form = document.getElementById("profileForm");
 const submitBtn = document.getElementById("submitBtn");
-const locBtn = document.getElementById("locBtn");
 const locStatus = document.getElementById("locStatus");
 const latEl = document.getElementById("latitude");
 const lngEl = document.getElementById("longitude");
@@ -43,6 +42,8 @@ function fill(vet) {
     lat: Number(vet.latitude).toFixed(4),
     lng: Number(vet.longitude).toFixed(4),
   });
+  locStatus.className = "location-status";
+  locationField.syncMap();
   if (vet.photo_path) {
     currentPhoto.src = photoUrl(vet.photo_path);
     currentPhoto.classList.remove("hidden");
@@ -61,22 +62,8 @@ photoEl.addEventListener("change", () => {
   }
 });
 
-// Update location.
-locBtn.addEventListener("click", async () => {
-  locStatus.textContent = t("common.locating");
-  locStatus.className = "location-status";
-  try {
-    const { lat, lng } = await getLocation();
-    latEl.value = lat;
-    lngEl.value = lng;
-    locStatus.textContent = t("loc.updated", { lat: lat.toFixed(4), lng: lng.toFixed(4) });
-    locStatus.className = "location-status ok";
-  } catch (err) {
-    const denied = err && err.code === 1;
-    locStatus.textContent = denied ? t("loc.deniedShort") : t("loc.failedShort");
-    locStatus.className = "location-status";
-  }
-});
+// Update location (detect or pick on the map).
+const locationField = initLocationField({ successKey: "loc.updated" });
 
 // Submit.
 form.addEventListener("submit", async (e) => {

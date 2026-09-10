@@ -359,8 +359,39 @@ a.card:hover { text-decoration: none; box-shadow: var(--shadow); transform: tran
 .field-row .field { flex: 1; }
 
 .location-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.location-status { font-size: 0.9rem; color: var(--text-muted); }
+.location-status { flex-basis: 100%; font-size: 0.9rem; color: var(--text-muted); }
 .location-status.ok { color: var(--success); font-weight: 600; }
+
+/* Map picker (Leaflet). `isolation` keeps Leaflet's high z-index panes from
+   drawing over the sticky header. */
+.map-wrap { margin-top: 12px; }
+.map-picker {
+  height: 300px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  isolation: isolate;
+}
+.map-wrap .hint { display: block; margin-top: 6px; }
+.map-pin span {
+  position: relative;
+  display: block;
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: var(--shadow);
+}
+.map-pin span::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 8px; height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #fff;
+}
 
 .photo-preview {
   width: 90px; height: 90px;

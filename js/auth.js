@@ -37,8 +37,6 @@ function withLoading(btn, label, fn) {
 /* ------------------------- Registration ------------------------- */
 const registerForm = document.getElementById("registerForm");
 if (registerForm) {
-  const locBtn = document.getElementById("locBtn");
-  const locStatus = document.getElementById("locStatus");
   const latEl = document.getElementById("latitude");
   const lngEl = document.getElementById("longitude");
   const photoEl = document.getElementById("photo");
@@ -56,22 +54,8 @@ if (registerForm) {
     }
   });
 
-  // Capture location
-  locBtn.addEventListener("click", async () => {
-    locStatus.textContent = t("common.locating");
-    locStatus.className = "location-status";
-    try {
-      const { lat, lng } = await getLocation();
-      latEl.value = lat;
-      lngEl.value = lng;
-      locStatus.textContent = t("loc.set", { lat: lat.toFixed(4), lng: lng.toFixed(4) });
-      locStatus.className = "location-status ok";
-    } catch (err) {
-      const denied = err && err.code === 1;
-      locStatus.textContent = denied ? t("loc.denied") : t("loc.failed");
-      locStatus.className = "location-status";
-    }
-  });
+  // Capture location (detect or pick on the map)
+  initLocationField({ successKey: "loc.set" });
 
   const submit = withLoading(submitBtn, t("reg.creating"), async () => {
     clearMsg();
