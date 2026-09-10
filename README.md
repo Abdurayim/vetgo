@@ -1,52 +1,29 @@
 # VetGo
 
-A pet owner ↔ vet booking and marketplace platform.
+A location-based veterinarian directory. **Pet owners browse without registering** —
+they allow location access and see vets sorted by distance, each with photo, name,
+profession, description, and contact actions (call / WhatsApp / copy number).
+**Vets register** and manage their public profile from a dashboard.
 
-**Stack:** Vite · React 19 · React Router v7 · TanStack Query · Zustand · Tailwind v4 · TypeScript
+This repository holds the **frontend** only: plain HTML/CSS/JS with no build step,
+deployed to GitHub Pages. The API is a separate Go (Gin) + SQLite service.
 
-## Getting started
+## Configuration
 
-```bash
-npm install
-npm run dev       # http://localhost:5173
-```
+`js/config.js` sets where the API lives:
 
-## Scripts
+- On `*.github.io` it points to the deployed backend (`https://178-218-200-21.sslip.io`).
+- Anywhere else it is empty, meaning same origin (the Go server serves these files locally).
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Vite dev server on :5173 |
-| `npm run build` | Production build → `dist/` |
-| `npm run preview` | Serve production build locally |
-| `npm run lint` | ESLint |
+The backend must list this site's origin (`https://abdurayim.github.io`) in its
+`CORS_ORIGINS` setting.
 
-## Project structure
+## Languages
 
-```
-src/
-  main.tsx          # Entry point
-  App.tsx           # Provider tree + RouterProvider
-  router.tsx        # React Router v7 route tree
-  pages/            # One file per route
-  features/         # Feature-sliced: api/, components/, hooks/, types/
-  shared/           # Reusable lib, providers, components, stores
-  styles/           # globals.css (Tailwind v4)
-```
+English, Russian and Uzbek. The default follows the device language and can be
+changed in the header (saved in `localStorage`). All strings live in `js/i18n.js`.
 
-## Environment
+## Deploy
 
-Create a `.env.local` for the future backend:
-
-```
-VITE_API_BASE_URL=http://localhost:3001/api
-```
-
-Without it, the dev proxy forwards `/api/*` to `localhost:3001` automatically.
-
-## Mock auth
-
-The mock login assigns roles by email prefix:
-- `admin@...` → admin dashboard
-- `vet@...` → vet dashboard
-- `seller@...` → seller dashboard
-- anything else → pet owner dashboard
+Every push to `main` publishes the repository root to GitHub Pages via
+`.github/workflows/pages.yml`.

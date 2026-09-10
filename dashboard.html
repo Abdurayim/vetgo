@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VetGo</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-i18n-title="dash.title">
+  <div id="header"></div>
+
+  <main class="container">
+    <div class="dash-head">
+      <h1 data-i18n="dash.heading">My profile</h1>
+      <div style="display:flex;gap:10px">
+        <a class="btn btn-ghost" id="viewPublic" href="#" target="_blank" data-i18n="dash.viewPublic">View public page ↗</a>
+        <button class="btn btn-ghost" id="logoutBtn" data-i18n="dash.logout">Log out</button>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:0" data-i18n="dash.sub">This is what pet owners see. Keep it up to date.</p>
+
+    <div class="auth-wrap" style="max-width:560px;margin:24px auto">
+      <div class="form-card">
+        <div class="form-msg" id="msg"></div>
+
+        <div id="loading" class="state"><span class="spinner" style="border-color:#ccc;border-top-color:var(--accent)"></span></div>
+
+        <form id="profileForm" class="hidden" novalidate>
+          <div class="field">
+            <label for="full_name" data-i18n="field.fullName">Full name</label>
+            <input id="full_name" name="full_name" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="profession" data-i18n="field.profession">Profession / specialty</label>
+            <input id="profession" name="profession" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="description" data-i18n="field.about">About you</label>
+            <textarea id="description" name="description"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="phone" data-i18n="field.phone">Contact phone</label>
+            <input id="phone" name="phone" type="tel" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="field.photo">Profile photo</label>
+            <div style="display:flex;align-items:center;gap:14px">
+              <img id="currentPhoto" class="photo-preview" alt="current photo" />
+              <div>
+                <input id="photo" name="photo" type="file" accept="image/*" />
+                <div class="hint" style="margin-top:4px" data-i18n="dash.replacePhoto">Choose a file to replace your photo.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label data-i18n="field.locationShort">Location</label>
+            <div class="location-row">
+              <button type="button" class="btn btn-soft" id="locBtn" data-i18n="btn.updateLocation">📍 Update to current location</button>
+              <span class="location-status" id="locStatus"></span>
+            </div>
+            <input type="hidden" id="latitude" name="latitude" />
+            <input type="hidden" id="longitude" name="longitude" />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn" data-i18n="dash.save">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="js/config.js"></script>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

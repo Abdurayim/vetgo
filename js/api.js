@@ -1,0 +1,154 @@
+/* Shared API client + small helpers, used by every page. */
+
+const API_BASE = `${API_ORIGIN}/api`; // API_ORIGIN comes from config.js
+const TOKEN_KEY = "vetnear_token";
+
+const Auth = {
+  get token() {
+    return localStorage.getItem(TOKEN_KEY);
+  },
+  set(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+  },
+  clear() {
+    localStorage.removeItem(TOKEN_KEY);
+  },
+  get isLoggedIn() {
+    return !!localStorage.getItem(TOKEN_KEY);
+  },
+};
+
+/* Thin fetch wrapper that throws an Error(message) on non-2xx responses. */
+async function request(path, { method = "GET", body, auth = false, json } = {}) {
+  const headers = {};
+  if (auth && Auth.token) headers["Authorization"] = `Bearer ${Auth.token}`;
+
+  let payload = body;
+  if (json !== undefined) {
+    headers["Content-Type"] = "application/json";
+    payload = JSON.stringify(json);
+  }
+
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, { method, headers, body: payload });
+  } catch {
+    // Network/connection failure — fetch rejects before any response.
+    throw new Error(t("err.network"));
+  }
+
+  // 401 on an authenticated call → token is dead; bounce to login.
+  if (res.status === 401 && auth) {
+    Auth.clear();
+    if (!location.pathname.endsWith("login.html")) {
+      location.href = "login.html";
+    }
+    throw new Error(t("err.session_expired"));
+  }
+
+  let data = null;
+  const text = await res.text();
+  if (text) {
+    try { data = JSON.parse(text); } catch { /* non-JSON */ }
+  }
+
+  if (!res.ok) {
+    // Prefer the localized message for the backend's error code; fall back to
+    // the server's English message, then a generic error.
+    const msg = I18N.tError(data && data.code, data && data.error);
+    throw new Error(msg);
+  }
+  return data;
+}
+
+const API = {
+  // Public
+  listVets: (lat, lng) => {
+    const q = lat != null && lng != null ? `?lat=${lat}&lng=${lng}` : "";
+    return request(`/vets${q}`);
+  },
+  getVet: (id) => request(`/vets/${id}`),
+
+  // Auth
+  register: (formData) => request("/auth/register", { method: "POST", body: formData }),
+  login: (email, password) => request("/auth/login", { method: "POST", json: { email, password } }),
+
+  // Authenticated self-service
+  getMe: () => request("/me", { auth: true }),
+  updateMe: (formData) => request("/me", { method: "PUT", body: formData, auth: true }),
+};
+
+/* ---------- Generic UI helpers ---------- */
+
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
+
+function photoUrl(path) {
+  return path ? API_ORIGIN + path : null; // backend returns "/uploads/.."
+}
+
+function formatDistance(km) {
+  if (km == null) return null;
+  if (km < 1) return t("dist.m", { n: Math.round(km * 1000) });
+  return t("dist.km", { n: km });
+}
+
+/* Browser geolocation as a promise. Resolves {lat, lng} or rejects. */
+function getLocation() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Geolocation is not supported by your browser."));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (err) => reject(err),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  });
+}
+
+/* Small transient toast. */
+function toast(message) {
+  let el = document.querySelector(".toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.className = "toast";
+    document.body.appendChild(el);
+  }
+  el.textContent = message;
+  requestAnimationFrame(() => el.classList.add("show"));
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+/* Reusable header markup so pages stay consistent. */
+function renderHeader() {
+  const loggedIn = Auth.isLoggedIn;
+  return `
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="index.html">
+          <span class="logo">🐾</span> ${BRAND}
+        </a>
+        <nav class="header-actions">
+          ${
+            loggedIn
+              ? `<a class="btn btn-ghost" href="dashboard.html">${t("nav.myProfile")}</a>`
+              : `<a class="btn btn-ghost" href="login.html">${t("nav.login")}</a>
+                 <a class="btn btn-primary" href="register.html">${t("nav.join")}</a>`
+          }
+          ${I18N.renderSwitcher()}
+        </nav>
+      </div>
+    </header>`;
+}
+
+function renderFooter() {
+  return `<footer class="site-footer">
+    <div class="container">${t("footer.tagline")}</div>
+  </footer>`;
+}

@@ -1,16 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VetGo</title>
-    <meta
-      name="description"
-      content="Hire trusted veterinarians and shop animal health products on VetGo."
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VetGo</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-i18n-title="home.title">
+  <div id="header"></div>
+
+  <main class="container">
+    <section class="hero">
+      <h1 data-i18n="home.heroTitle">Find a trusted vet near you</h1>
+      <p data-i18n="home.heroText">Allow location access and we'll show you veterinarians closest to you — no sign-up needed.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" id="locateBtn" data-i18n="home.findNearMe">📍 Find vets near me</button>
+        <a class="btn btn-ghost btn-lg" href="#vets" id="browseBtn" data-i18n="home.browseAll">Browse all</a>
+      </div>
+    </section>
+
+    <div id="notice"></div>
+
+    <section id="vets">
+      <div class="section-head">
+        <h2 id="listTitle" data-i18n="home.listTitle">Veterinarians</h2>
+        <span class="count" id="listCount"></span>
+      </div>
+      <div id="results" class="grid"></div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="js/config.js"></script>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/home.js"></script>
+</body>
 </html>

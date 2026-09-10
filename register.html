@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VetGo</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-i18n-title="reg.title">
+  <div id="header"></div>
+
+  <main class="container">
+    <div class="auth-wrap">
+      <div class="form-card">
+        <h1 data-i18n="reg.heading">Join VetGo</h1>
+        <p class="sub" data-i18n="reg.sub">Create your profile so pet owners nearby can find you.</p>
+
+        <div class="form-msg" id="msg"></div>
+
+        <form id="registerForm" novalidate>
+          <div class="field">
+            <label for="full_name" data-i18n="field.fullName">Full name</label>
+            <input id="full_name" name="full_name" type="text" required data-i18n-placeholder="ph.fullName" />
+          </div>
+
+          <div class="field">
+            <label for="profession" data-i18n="field.profession">Profession / specialty</label>
+            <input id="profession" name="profession" type="text" required data-i18n-placeholder="ph.profession" />
+          </div>
+
+          <div class="field">
+            <label for="description"><span data-i18n="field.about">About you</span> <span class="hint" data-i18n="field.about.hint">— what you do, experience</span></label>
+            <textarea id="description" name="description" data-i18n-placeholder="ph.about"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="phone" data-i18n="field.phone">Contact phone</label>
+            <input id="phone" name="phone" type="tel" required data-i18n-placeholder="ph.phone" />
+          </div>
+
+          <div class="field">
+            <label for="photo"><span data-i18n="field.photo">Profile photo</span> <span class="hint" data-i18n="field.photo.optional">— optional</span></label>
+            <input id="photo" name="photo" type="file" accept="image/*" />
+            <img id="photoPreview" class="photo-preview hidden" alt="preview" style="margin-top:10px" />
+          </div>
+
+          <div class="field">
+            <label><span data-i18n="field.location">Your location</span> <span class="hint" data-i18n="field.location.hint">— used to show you to nearby pet owners</span></label>
+            <div class="location-row">
+              <button type="button" class="btn btn-soft" id="locBtn" data-i18n="btn.useLocation">📍 Use my current location</button>
+              <span class="location-status" id="locStatus" data-i18n="loc.notSet">Not set</span>
+            </div>
+            <input type="hidden" id="latitude" name="latitude" />
+            <input type="hidden" id="longitude" name="longitude" />
+          </div>
+
+          <hr style="border:none;border-top:1px solid var(--border);margin:22px 0" />
+
+          <div class="field">
+            <label for="email"><span data-i18n="field.email">Email</span> <span class="hint" data-i18n="field.email.hint">— for login</span></label>
+            <input id="email" name="email" type="email" required data-i18n-placeholder="ph.email" />
+          </div>
+
+          <div class="field">
+            <label for="password"><span data-i18n="field.password">Password</span> <span class="hint" data-i18n="field.password.hint">— at least 6 characters</span></label>
+            <input id="password" name="password" type="password" required minlength="6" />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn" data-i18n="reg.submit">Create my profile</button>
+        </form>
+
+        <p class="form-foot"><span data-i18n="reg.haveAccount">Already registered?</span> <a href="login.html" data-i18n="reg.login">Log in</a></p>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="js/config.js"></script>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
