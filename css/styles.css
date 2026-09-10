@@ -596,6 +596,8 @@ a.card:hover .card-go { background: var(--magenta); }
 .location-status { flex-basis: 100%; font-size: 14.5px; color: var(--muted); }
 .location-status:empty { display: none; }
 .location-status.ok { color: var(--success); font-weight: 700; }
+.location-status.warn { color: #8A4B00; font-weight: 500; }
+.geo-credit { font-size: 13px; color: var(--faint); white-space: nowrap; }
 
 /* Map picker (Leaflet). `isolation` keeps Leaflet's high z-index panes from
    drawing over the sticky header. */

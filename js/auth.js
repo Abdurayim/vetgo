@@ -53,7 +53,7 @@ if (registerForm) {
   });
 
   // Capture location (detect or pick on the map)
-  initLocationField({ successKey: "loc.set" });
+  initLocationField({ successKey: "loc.set", autoDetect: true, approximateFallback: true });
 
   const submit = withLoading(submitBtn, t("reg.creating"), async () => {
     clearMsg();

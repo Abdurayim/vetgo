@@ -68,6 +68,7 @@ const API = {
     return request(`/vets${q}`);
   },
   getVet: (id) => request(`/vets/${id}`),
+  geoip: () => request(`/geoip?lang=${encodeURIComponent(I18N.lang)}`),
 
   // Auth
   register: (formData) => request("/auth/register", { method: "POST", body: formData }),
@@ -98,25 +99,55 @@ function formatDistance(km, { short = false } = {}) {
   return t("dist.km" + suffix, { n: km });
 }
 
-/* Browser geolocation as a promise. Resolves {lat, lng}, or rejects with an
-   object whose `code` is a GeolocationPositionError code (0 = unsupported).
-   GPS-level accuracy is tried first; if the device can't provide it in time
-   (typical for laptops and phones indoors), it retries with the faster
-   network-based position, which is plenty for placing a clinic. */
-function getLocation() {
+/* In-app browsers (Telegram, Instagram, Facebook, Android WebViews) often block location. */
+const IN_APP_BROWSER = /Telegram|Instagram|FBAN|FBAV|Line\/|; wv\)/i.test(navigator.userAgent);
+
+/* Browser geolocation. A quick network-based fix and a GPS fix are requested
+   together: the promise resolves with whichever arrives first ({lat, lng,
+   accuracy} in metres) and onRefine receives a later, more accurate one.
+   Rejects with {code} (GeolocationPositionError codes, 0 = unsupported) only
+   when both attempts fail. */
+function getLocation({ onRefine } = {}) {
   if (!navigator.geolocation) return Promise.reject({ code: 0 });
-  const attempt = (options) =>
-    new Promise((resolve, reject) =>
-      navigator.geolocation.getCurrentPosition(
-        (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-        reject,
-        options
-      )
-    );
-  return attempt({ enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }).catch((err) => {
-    if (err && err.code === 1) throw err; // permission denied: retrying won't help
-    return attempt({ enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
+  return new Promise((resolve, reject) => {
+    let best = null;
+    let pending = 2;
+    let failure = null;
+    const onPosition = (pos) => {
+      pending--;
+      const fix = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy };
+      if (!best) {
+        best = fix;
+        resolve(fix);
+      } else if (fix.accuracy < best.accuracy) {
+        best = fix;
+        if (onRefine) onRefine(fix);
+      }
+    };
+    const onError = (err) => {
+      pending--;
+      if (!failure || err.code === 1) failure = err; // a denial explains more than a timeout
+      if (pending === 0 && !best) reject(failure);
+    };
+    const geo = navigator.geolocation;
+    geo.getCurrentPosition(onPosition, onError, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+    geo.getCurrentPosition(onPosition, onError, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
   });
+}
+
+/* Approximate {latitude, longitude, city} for the visitor's IP address from our
+   API, or null when unavailable. Used when the browser can't locate. */
+async function approximateLocation() {
+  try {
+    return await API.geoip();
+  } catch {
+    return null;
+  }
+}
+
+/* "±40 m" / "±2.5 km" for a position's accuracy radius. */
+function formatAccuracy(m) {
+  return "±" + (m < 1000 ? t("dist.mShort", { n: Math.round(m) }) : t("dist.kmShort", { n: (m / 1000).toFixed(1) }));
 }
 
 /* Localized explanation for a getLocation() failure. */

@@ -41,6 +41,15 @@ function showNotice(html) {
   noticeEl.innerHTML = html;
 }
 
+function banner(html) {
+  return `
+    <div class="banner">
+      ${icon("pin", 22)}
+      <span>${html}</span>
+      <button class="btn btn-outline btn-sm" type="button" onclick="locate()">${t("common.tryAgain")}</button>
+    </div>`;
+}
+
 async function load(coords) {
   skeletons();
   try {
@@ -65,14 +74,21 @@ async function locate() {
     const coords = await getLocation();
     await load(coords);
   } catch (err) {
-    const denied = err && err.code === 1; // PERMISSION_DENIED
-    showNotice(`
-      <div class="banner">
-        ${icon("pin", 22)}
-        <span>${denied ? t("home.banner.denied") : t("home.banner.error")}</span>
-        <button class="btn btn-outline btn-sm" type="button" onclick="locate()">${t("common.tryAgain")}</button>
-      </div>`);
-    await load(null);
+    // No position from the browser: sort by the approximate location of the
+    // visitor's IP address instead, and say so.
+    const tip = IN_APP_BROWSER ? " " + t("loc.inApp") : "";
+    const approx = await approximateLocation();
+    if (approx) {
+      const text = approx.city
+        ? t("home.banner.approx", { city: escapeHtml(approx.city) })
+        : t("home.banner.approxNoCity");
+      showNotice(banner(`${text}${tip} <a class="geo-credit" href="https://db-ip.com" target="_blank" rel="noopener">IP Geolocation by DB-IP</a>`));
+      await load({ lat: approx.latitude, lng: approx.longitude });
+    } else {
+      const denied = err && err.code === 1; // PERMISSION_DENIED
+      showNotice(banner((denied ? t("home.banner.denied") : t("home.banner.error")) + tip));
+      await load(null);
+    }
   } finally {
     locateBtn.disabled = false;
     locateBtn.innerHTML = original;
